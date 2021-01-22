@@ -41,7 +41,7 @@ suite('Functional Tests', () => {
 
       });
 
-      test('Create an issue with required fields only', async () => {
+      test.only('Create an issue with required fields only', async () => {
         const projectName = 'testProject'
         const requestBody = {
           issue_title: 'title',
@@ -51,11 +51,11 @@ suite('Functional Tests', () => {
         const res = await chai.request(server)
           .post(`/api/issues/${projectName}`)
           .send(requestBody)
-
+        console.log('response body', res.body)
         assert.equal(res.body.issue_text, requestBody.issue_text)
         assert.equal(res.body.issue_title, requestBody.issue_title)
         assert.equal(res.body.created_by, requestBody.created_by)
-        assert.equal(res.body.assigned_to, requestBody.assigned_to)
+        assert.equal(res.body.assigned_to, '')
         assert.isNumber(Date.parse(res.body.created_on))
         assert.isNumber(Date.parse(res.body.updated_on))
         assert.property(res.body, 'open')

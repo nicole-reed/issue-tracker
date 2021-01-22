@@ -19,7 +19,7 @@ class IssueController {
         issue_title,
         issue_text,
         created_by,
-        assigned_to,
+        assigned_to: assigned_to || '',
         created_on: currentTime,
         updated_on: currentTime,
         open: true,
@@ -69,7 +69,12 @@ class IssueController {
         updated_on: new Date()
       }
 
-      await Issue.findByIdAndUpdate(_id, updateBody, { useFindAndModify: false })
+      const response = await Issue.findByIdAndUpdate(_id, updateBody, { useFindAndModify: false })
+      console.log('response', response)
+
+      if (response === null) {
+        throw new Error('could not update')
+      }
 
       return { result: 'successfully updated', _id }
     } catch (error) {
@@ -93,8 +98,11 @@ class IssueController {
         throw new Error(missingIdErrorMessage)
       }
 
-      await Issue.findByIdAndDelete(_id, { useFindAndModify: false })
+      const response = await Issue.findByIdAndDelete(_id, { useFindAndModify: false })
 
+      if (response === null) {
+        throw new Error('could not delete')
+      }
       return { result: 'successfully deleted', _id }
     } catch (error) {
       console.log('error in deleteIssue:\n', error)
