@@ -6,11 +6,11 @@ const server = require('../server');
 chai.use(chaiHttp);
 
 
-suite('Functional Tests', function () {
+suite('Functional Tests', () => {
 
-  suite('Routing Tests', function () {
+  suite('Routing Tests', () => {
 
-    suite('POST /api/issues/{project} => create an issue', function () {
+    suite('POST /api/issues/{project} => create an issue', () => {
 
       test('Create an issue with every field', async () => {
         const projectName = 'testProject'
@@ -80,7 +80,7 @@ suite('Functional Tests', function () {
 
     });
 
-    suite('GET /api/issues/{project}', function () {
+    suite('GET /api/issues/{project}', () => {
 
       test('View issues on a project', async () => {
         const projectName = 'get_issues_test_' + Date.now().toString().substring(7);
@@ -219,7 +219,7 @@ suite('Functional Tests', function () {
       })
     });
 
-    suite('PUT /api/issues/{project} => update an issue', function () {
+    suite('PUT /api/issues/{project} => update an issue', () => {
 
       test('Update one field on an issue', async () => {
         const projectName = 'testProject'
@@ -325,7 +325,7 @@ suite('Functional Tests', function () {
       })
     });
 
-    suite('DELETE /api/issues/{project} => delete an issue', function () {
+    suite('DELETE /api/issues/{project} => delete an issue', () => {
 
       test('Delete an issue', async () => {
         const projectName = 'Test_Project_Delete'
