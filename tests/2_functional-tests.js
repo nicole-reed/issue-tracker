@@ -12,7 +12,7 @@ suite('Functional Tests', function () {
 
     suite('POST /api/issues/{project} => create an issue', function () {
 
-      test('Create an issue with every field', function (done) {
+      test('Create an issue with every field', async () => {
         const projectName = 'testProject'
         const requestBody = {
           issue_title: 'title',
@@ -21,71 +21,61 @@ suite('Functional Tests', function () {
           assigned_to: 'other name',
           status_text: 'in qa'
         }
-        chai.request(server)
+        const res = await chai.request(server)
           .post(`/api/issues/${projectName}`)
           .send(requestBody)
-          .end(function (err, res) {
-            // console.log(res.body)
-            assert.equal(res.status, 200);
-            assert.equal(res.body.issue_text, requestBody.issue_text)
-            assert.equal(res.body.issue_title, requestBody.issue_title)
-            assert.equal(res.body.created_by, requestBody.created_by)
-            assert.equal(res.body.assigned_to, requestBody.assigned_to)
-            assert.isNumber(Date.parse(res.body.created_on))
-            assert.isNumber(Date.parse(res.body.updated_on))
-            assert.property(res.body, 'open');
-            assert.isBoolean(res.body.open);
-            assert.isTrue(res.body.open);
-            assert.property(res.body, '_id');
-            assert.isNotEmpty(res.body._id);
-            assert.equal(res.body.status_text, '');
-            assert.equal(res.body.project, projectName)
-            done()
-          })
+
+        assert.equal(res.body.issue_text, requestBody.issue_text)
+        assert.equal(res.body.issue_title, requestBody.issue_title)
+        assert.equal(res.body.created_by, requestBody.created_by)
+        assert.equal(res.body.assigned_to, requestBody.assigned_to)
+        assert.isNumber(Date.parse(res.body.created_on))
+        assert.isNumber(Date.parse(res.body.updated_on))
+        assert.property(res.body, 'open')
+        assert.isBoolean(res.body.open)
+        assert.isTrue(res.body.open)
+        assert.property(res.body, '_id')
+        assert.isNotEmpty(res.body._id)
+        assert.equal(res.body.status_text, '')
+        assert.equal(res.body.project, projectName)
 
       });
 
-      test('Create an issue with required fields only', function (done) {
+      test('Create an issue with required fields only', async () => {
         const projectName = 'testProject'
         const requestBody = {
           issue_title: 'title',
           issue_text: 'text',
           created_by: 'name'
         }
-        chai.request(server)
+        const res = await chai.request(server)
           .post(`/api/issues/${projectName}`)
           .send(requestBody)
-          .end(function (err, res) {
-            assert.equal(res.status, 200);
-            assert.equal(res.body.issue_text, requestBody.issue_text)
-            assert.equal(res.body.issue_title, requestBody.issue_title)
-            assert.equal(res.body.created_by, requestBody.created_by)
-            assert.equal(res.body.assigned_to, requestBody.assigned_to)
-            assert.isNumber(Date.parse(res.body.created_on))
-            assert.isNumber(Date.parse(res.body.updated_on))
-            assert.property(res.body, 'open');
-            assert.isBoolean(res.body.open);
-            assert.isTrue(res.body.open);
-            assert.property(res.body, '_id');
-            assert.isNotEmpty(res.body._id);
-            assert.equal(res.body.status_text, '');
-            assert.equal(res.body.project, projectName)
-            done()
-          })
 
+        assert.equal(res.body.issue_text, requestBody.issue_text)
+        assert.equal(res.body.issue_title, requestBody.issue_title)
+        assert.equal(res.body.created_by, requestBody.created_by)
+        assert.equal(res.body.assigned_to, requestBody.assigned_to)
+        assert.isNumber(Date.parse(res.body.created_on))
+        assert.isNumber(Date.parse(res.body.updated_on))
+        assert.property(res.body, 'open')
+        assert.isBoolean(res.body.open)
+        assert.isTrue(res.body.open)
+        assert.property(res.body, '_id')
+        assert.isNotEmpty(res.body._id)
+        assert.equal(res.body.status_text, '')
+        assert.equal(res.body.project, projectName)
       });
 
-      test('Create an issue with missing required fields', function (done) {
+      test('Create an issue with missing required fields', async () => {
         const projectName = 'testProject'
         const requestBody = { created_by: 'name' }
-        chai.request(server)
+        const res = await chai.request(server)
           .post(`/api/issues/${projectName}`)
           .send(requestBody)
-          .end(function (err, res) {
-            assert.property(res.body, 'error');
-            assert.equal(res.body.error, 'required field(s) missing');
-            done()
-          })
+
+        assert.property(res.body, 'error')
+        assert.equal(res.body.error, 'required field(s) missing')
       })
 
     });
